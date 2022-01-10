@@ -1,32 +1,29 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 class Solution {
 public:
-    int minSubArrayLen(int target, vector<int>& nums) {
-        const int INF = 1e6;
+    bool canPair(vector<int> nums, int k)
+    {
         int n = nums.size();
-        int ii = 0, ll = n;
-        int len = INF;
-        int sum = 0;
-        for(int ff=0;ff<n;ff++) {
-            sum += nums[ff];
-            if(sum>=target) {
-                len = min(ff-ii+1, len);
-                while(ii<ff) {
-                    sum-=nums[ii];
-                    ii++;
-                    if(sum>=target) {
-                        len = min(len, ff-ii+1);
-                    } else {
-                        break;
-                    }
-                }
-            } else {
-                continue;
-            }
+        map<int, int> hash;
+        for (int i = 0; i < n; i++) {
+            hash[nums[i] % k]++;
         }
-        if(len == 1e6)  return 0;
-        else return len;
-        
+        if (hash[0] % 2 != 0)
+            return false;
+        int ff = 1;
+        int ss = k - 1;
+        while (ff < ss) {
+            if (hash[ff] != hash[ss]) {
+                return false;
+            }
+            ff++;
+            ss--;
+        }
+        if (ff == ss) {
+            if (hash[ff] % 2 != 0)
+                return false;
+        }
+        return true;
     }
 };
